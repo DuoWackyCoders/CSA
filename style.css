@@ -58,3 +58,28 @@ cursor: pointer;
 button:hover {
 background: #22863a;
 }
+
+.signal-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.signal-table th {
+    text-align: center;
+    padding: 10px;
+}
+
+.signal-table td {
+    padding: 8px;
+}
+
+.signal-table input {
+    width: 90%;
+}
+
+#result {
+    margin-top: 25px;
+    font-size: 20px;
+    text-align: center;
+}
