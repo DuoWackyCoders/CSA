@@ -6,13 +6,13 @@ color: white;
 }
 
 .container {
-max-width: 700px;
-margin: auto;
-margin-top: 60px;
-padding: 30px;
-background: rgba(0,0,0,0.35);
-border-radius: 12px;
-backdrop-filter: blur(6px);
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 30px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+    text-align: center;
 }
 
 h1 {
@@ -44,46 +44,45 @@ font-size: 14px;
 }
 
 button {
-width: 100%;
-margin-top: 25px;
-padding: 12px;
-font-size: 16px;
-border-radius: 8px;
-border: none;
-background: #2ea44f;
-color: white;
-cursor: pointer;
+    width: 100%;
+    margin-top: 25px;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: none;
+    background: #2ea44f;
+    color: white;
+    cursor: pointer;
 }
 
 button:hover {
-background: #22863a;
+    background: #22863a;
 }
 
 .signal-table {
     width: auto;
     margin: 25px auto;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 15px 10px;
 }
 
 .signal-table th {
     text-align: center;
-    padding: 8px 15px;
     font-size: 16px;
 }
 
 .signal-table td {
-    padding: 6px 15px;
     text-align: center;
 }
 
 .signal-table td:first-child {
     text-align: right;
-    padding-right: 15px;
-    width: 160px;
+    padding-right: 10px;
+    width: 150px;
 }
 
 .signal-table input {
-    width: 70px;
+    width: 75px;
     padding: 6px;
     border-radius: 6px;
     border: none;
