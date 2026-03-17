@@ -61,10 +61,10 @@ button:hover {
 }
 
 .signal-table {
-    width: auto;
+    width: fit-content;
     margin: 25px auto;
     border-collapse: separate;
-    border-spacing: 15px 10px;
+    border-spacing: 20px 12px;
 }
 
 .signal-table th {
@@ -77,9 +77,9 @@ button:hover {
 }
 
 .signal-table td:first-child {
-    text-align: right;
+    text-align: left;
     padding-right: 10px;
-    width: 150px;
+    width: auto;
 }
 
 .signal-table input {
