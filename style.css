@@ -62,24 +62,29 @@ background: #22863a;
 .signal-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .signal-table th {
     text-align: center;
-    padding: 10px;
+    padding-bottom: 10px;
+    font-size: 16px;
 }
 
 .signal-table td {
     padding: 8px;
+    text-align: center;
+}
+
+.signal-table td:first-child {
+    text-align: left;
+    width: 180px;
 }
 
 .signal-table input {
-    width: 90%;
-}
-
-#result {
-    margin-top: 25px;
-    font-size: 20px;
+    width: 90px;
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
     text-align: center;
 }
