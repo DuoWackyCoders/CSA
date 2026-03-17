@@ -60,30 +60,31 @@ background: #22863a;
 }
 
 .signal-table {
-    width: 100%;
+    width: auto;
+    margin: 25px auto;
     border-collapse: collapse;
-    margin-top: 25px;
 }
 
 .signal-table th {
     text-align: center;
-    padding-bottom: 10px;
+    padding: 8px 15px;
     font-size: 16px;
 }
 
 .signal-table td {
-    padding: 8px;
+    padding: 6px 15px;
     text-align: center;
 }
 
 .signal-table td:first-child {
-    text-align: left;
-    width: 180px;
+    text-align: right;
+    padding-right: 15px;
+    width: 160px;
 }
 
 .signal-table input {
-    width: 90px;
-    padding: 8px;
+    width: 70px;
+    padding: 6px;
     border-radius: 6px;
     border: none;
     text-align: center;
