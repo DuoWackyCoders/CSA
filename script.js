@@ -85,9 +85,13 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
 
     const resultDiv = document.getElementById("result");
 
-    // Build result UI
-    let html = `
-       let winner = carriers[0];
+    // Sort highest first
+carriers.sort((a, b) => b.score - a.score);
+
+const resultDiv = document.getElementById("result");
+
+// Winner logic
+let winner = carriers[0];
 
 // assign color
 let color = "";
@@ -95,6 +99,7 @@ if (winner.name === "AT&T") color = "#00A8E0";
 if (winner.name === "Verizon") color = "#CD040B";
 if (winner.name === "T-Mobile") color = "#E20074";
 
+// Start HTML
 let html = `
     <div class="result-card">
         <div class="best-header">
@@ -112,22 +117,27 @@ let html = `
 
     <div class="ranking">
 `;
-    `;
 
-    carriers.forEach(c => {
-        html += `
-            <div class="result-row">
-                <span>${c.name}</span>
-                <span>${Math.round(c.score)}</span>
-                <span>${c.quality}</span>
-            </div>
-        `;
-    });
+// Ranking rows
+carriers.forEach(c => {
+
+    let cColor = "";
+    if (c.name === "AT&T") cColor = "#00A8E0";
+    if (c.name === "Verizon") cColor = "#CD040B";
+    if (c.name === "T-Mobile") cColor = "#E20074";
 
     html += `
-            </div>
+        <div class="ranking-row ${c.name === winner.name ? 'winner-row' : ''}">
+            <span style="color:${cColor}">${c.name}</span>
+            <span>${Math.round(c.score)}</span>
+            <span class="quality-${c.quality.toLowerCase()}">${c.quality}</span>
         </div>
     `;
+});
 
-    resultDiv.innerHTML = html;
+// Close ranking
+html += `</div>`;
+
+// Render
+resultDiv.innerHTML = html;
 });
