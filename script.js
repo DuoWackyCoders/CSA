@@ -75,17 +75,12 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
     ];
 
     // Calculate scores
-    carriers.forEach(c => {
-        c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
-        c.quality = getQuality(c.score);
-    });
+carriers.forEach(c => {
+    c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
+    c.quality = getQuality(c.score);
+});
 
-    // Sort highest first
-    carriers.sort((a, b) => b.score - a.score);
-
-    const resultDiv = document.getElementById("result");
-
-    // Sort highest first
+// Sort highest first
 carriers.sort((a, b) => b.score - a.score);
 
 const resultDiv = document.getElementById("result");
@@ -140,4 +135,5 @@ html += `</div>`;
 
 // Render
 resultDiv.innerHTML = html;
+
 });
