@@ -87,9 +87,31 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
 
     // Build result UI
     let html = `
-        <div class="result-card">
-            <h2>🏆 Best Carrier: ${carriers[0].name}</h2>
-            <div class="result-list">
+       let winner = carriers[0];
+
+// assign color
+let color = "";
+if (winner.name === "AT&T") color = "#00A8E0";
+if (winner.name === "Verizon") color = "#CD040B";
+if (winner.name === "T-Mobile") color = "#E20074";
+
+let html = `
+    <div class="result-card">
+        <div class="best-header">
+            📡 Best Carrier
+        </div>
+
+        <div class="best-carrier" style="color:${color}">
+            ${winner.name}
+        </div>
+
+        <div class="best-score">
+            Score: ${Math.round(winner.score)} (${winner.quality})
+        </div>
+    </div>
+
+    <div class="ranking">
+`;
     `;
 
     carriers.forEach(c => {
