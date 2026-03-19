@@ -50,37 +50,46 @@ function getQuality(score) {
 // --- Main analyze function ---
 document.getElementById("analyzeBtn").addEventListener("click", function () {
 
-    const carriers = [
-        {
-            name: "AT&T",
-           rsrp: parseFloat(document.getElementById("att_rsrp").value) || -120,
-           rsrq: parseFloat(document.getElementById("att_rsrq").value) || -20,
-           rssi: parseFloat(document.getElementById("att_rssi").value) || -100,
-           sinr: parseFloat(document.getElementById("att_sinr").value) || 0,
-        },
-        {
-            name: "Verizon",
-            rsrp: parseFloat(document.getElementById("verizon_rsrp").value) || -120,
-            rsrq: parseFloat(document.getElementById("verizon_rsrq").value) || -20,
-            rssi: parseFloat(document.getElementById("verizon_rssi").value) || -100,
-            sinr: parseFloat(document.getElementById("verizon_sinr").value) || 0,
-        },
-        {
-            name: "T-Mobile",
-            rsrp: parseFloat(document.getElementById("tmobile_rsrp").value) || -120,
-            rsrq: parseFloat(document.getElementById("tmobile_rsrq").value) || -20,
-            rssi: parseFloat(document.getElementById("tmobile_rssi").value) || -100,
-            sinr: parseFloat(document.getElementById("tmobile_sinr").value) || 0,
-        }
-    ];
+const carriers = [
+    {
+        name: "AT&T",
+        rsrp: document.getElementById("att_rsrp").value,
+        rsrq: document.getElementById("att_rsrq").value,
+        rssi: document.getElementById("att_rssi").value,
+        sinr: document.getElementById("att_sinr").value,
+    },
+    {
+        name: "Verizon",
+        rsrp: document.getElementById("verizon_rsrp").value,
+        rsrq: document.getElementById("verizon_rsrq").value,
+        rssi: document.getElementById("verizon_rssi").value,
+        sinr: document.getElementById("verizon_sinr").value,
+    },
+    {
+        name: "T-Mobile",
+        rsrp: document.getElementById("tmobile_rsrp").value,
+        rsrq: document.getElementById("tmobile_rsrq").value,
+        rssi: document.getElementById("tmobile_rssi").value,
+        sinr: document.getElementById("tmobile_sinr").value,
+    }
+];
 
     // --- Validation ---
 for (let c of carriers) {
-    if (isNaN(c.rsrp) || isNaN(c.rsrq)) {
-        alert("Please fill RSRP and RSRQ for all carriers.");
+    if (c.rsrp === "" || c.rsrq === "") {
+        alert("Please enter RSRP and RSRQ for all carriers.");
         return;
     }
 }
+
+    // Convert to numbers AFTER validation
+carriers.forEach(c => {
+    c.rsrp = parseFloat(c.rsrp);
+    c.rsrq = parseFloat(c.rsrq);
+    c.rssi = c.rssi === "" ? -100 : parseFloat(c.rssi);
+    c.sinr = c.sinr === "" ? 0 : parseFloat(c.sinr);
+});
+    
 
     // Calculate scores
 carriers.forEach(c => {
