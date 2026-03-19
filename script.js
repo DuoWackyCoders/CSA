@@ -117,8 +117,8 @@ let html = `
 carriers.forEach(c => {
 
     let cColor = "";
-    if (c.name === "AT&T") cColor = "#00A8E0";
-    if (c.name === "Verizon") cColor = "#CD040B";
+    if (c.name === "AT&T") cColor = "#0077C8";
+    if (c.name === "Verizon") cColor = "#C8102E";
     if (c.name === "T-Mobile") cColor = "#E20074";
 
     html += `
