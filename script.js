@@ -53,24 +53,24 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
     const carriers = [
         {
             name: "AT&T",
-            rsrp: parseFloat(document.getElementById("att_rsrp").value),
-            rsrq: parseFloat(document.getElementById("att_rsrq").value),
-            rssi: parseFloat(document.getElementById("att_rssi").value),
-            sinr: parseFloat(document.getElementById("att_sinr").value),
+           rsrp: parseFloat(document.getElementById("att_rsrp").value) || -120,
+           rsrq: parseFloat(document.getElementById("att_rsrq").value) || -20,
+           rssi: parseFloat(document.getElementById("att_rssi").value) || -100,
+           sinr: parseFloat(document.getElementById("att_sinr").value) || 0,
         },
         {
             name: "Verizon",
-            rsrp: parseFloat(document.getElementById("verizon_rsrp").value),
-            rsrq: parseFloat(document.getElementById("verizon_rsrq").value),
-            rssi: parseFloat(document.getElementById("verizon_rssi").value),
-            sinr: parseFloat(document.getElementById("verizon_sinr").value),
+            rsrp: parseFloat(document.getElementById("verizon_rsrp").value) || -120,
+            rsrq: parseFloat(document.getElementById("verizon_rsrq").value) || -20,
+            rssi: parseFloat(document.getElementById("verizon_rssi").value) || -100,
+            sinr: parseFloat(document.getElementById("verizon_sinr").value) || 0,
         },
         {
             name: "T-Mobile",
-            rsrp: parseFloat(document.getElementById("tmobile_rsrp").value),
-            rsrq: parseFloat(document.getElementById("tmobile_rsrq").value),
-            rssi: parseFloat(document.getElementById("tmobile_rssi").value),
-            sinr: parseFloat(document.getElementById("tmobile_sinr").value),
+            rsrp: parseFloat(document.getElementById("tmobile_rsrp").value) || -120,
+            rsrq: parseFloat(document.getElementById("tmobile_rsrq").value) || -20,
+            rssi: parseFloat(document.getElementById("tmobile_rssi").value) || -100,
+            sinr: parseFloat(document.getElementById("tmobile_sinr").value) || 0,
         }
     ];
 
