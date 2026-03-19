@@ -74,9 +74,9 @@ const carriers = [
     }
 ];
 
-    // --- Validation ---
+   // --- Validation ---
 for (let c of carriers) {
-    if (c.rsrp === "" || c.rsrq === "") {
+    if (!c.rsrp || !c.rsrq || c.rsrp.trim() === "" || c.rsrq.trim() === "") {
         alert("Please enter RSRP and RSRQ for all carriers.");
         return;
     }
