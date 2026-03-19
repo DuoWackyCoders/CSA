@@ -74,6 +74,14 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
         }
     ];
 
+    // --- Validation ---
+for (let c of carriers) {
+    if (isNaN(c.rsrp) || isNaN(c.rsrq)) {
+        alert("Please fill RSRP and RSRQ for all carriers.");
+        return;
+    }
+}
+
     // Calculate scores
 carriers.forEach(c => {
     c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
@@ -136,4 +144,38 @@ html += `</div>`;
 // Render
 resultDiv.innerHTML = html;
 
+});
+
+// Arrow key navigation
+document.querySelectorAll("input").forEach((input, index, inputs) => {
+
+    input.addEventListener("keydown", function (e) {
+
+        let cols = 3;
+
+        if (e.key === "ArrowDown") {
+            e.preventDefault();
+            let next = inputs[index + cols];
+            if (next) next.focus();
+        }
+
+        if (e.key === "ArrowUp") {
+            e.preventDefault();
+            let prev = inputs[index - cols];
+            if (prev) prev.focus();
+        }
+
+        if (e.key === "Enter") {
+            e.preventDefault();
+            let next = inputs[index + cols];
+            if (next) next.focus();
+        }
+
+    });
+
+});
+
+document.getElementById("clearBtn").addEventListener("click", function () {
+    document.querySelectorAll("input").forEach(input => input.value = "");
+    document.getElementById("result").innerHTML = "";
 });
