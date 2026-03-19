@@ -105,6 +105,24 @@ const resultDiv = document.getElementById("result");
 // Winner logic
 let winner = carriers[0];
 
+    // Remove previous highlights
+document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
+    el.classList.remove("highlight-column");
+});
+
+// Apply highlight
+if (winner.name === "AT&T") {
+    document.querySelectorAll(".att-col").forEach(el => el.classList.add("highlight-column"));
+}
+
+if (winner.name === "Verizon") {
+    document.querySelectorAll(".verizon-col").forEach(el => el.classList.add("highlight-column"));
+}
+
+if (winner.name === "T-Mobile") {
+    document.querySelectorAll(".tmobile-col").forEach(el => el.classList.add("highlight-column"));
+}
+
 // assign color
 let color = "";
 if (winner.name === "AT&T") color = "#00A8E0";
