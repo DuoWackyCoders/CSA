@@ -91,12 +91,14 @@ button:hover {
 }
 
 .result-card {
-    margin-top: 30px;
-    padding: 20px;
+    margin: 40px auto 0 auto;
+    padding: 25px;
+    width: fit-content;
+    min-width: 300px;
     background: rgba(0,0,0,0.6);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    animation: fadeIn 0.3s ease-in-out;
+    text-align: center;
 }
 
 .result-card h2 {
@@ -115,6 +117,20 @@ button:hover {
     padding: 10px;
     background: rgba(255,255,255,0.05);
     border-radius: 6px;
+}
+
+.ranking {
+    margin: 20px auto;
+    width: fit-content;
+    min-width: 300px;
+}
+
+.ranking-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 8px 10px;
+    font-size: 14px;
 }
 
 .best-header {
