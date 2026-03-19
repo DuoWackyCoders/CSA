@@ -170,6 +170,12 @@ button:hover {
     color: #d0ffd0;
 }
 
+.highlight-column {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 12px rgba(255,255,255,0.15);
+    border-radius: 6px;
+}
+
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
