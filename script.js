@@ -1,9 +1,19 @@
 // --- Convert RSRP to score ---
 function scoreRSRP(value) {
-    if (value >= -90) return 100; 
-    if (value >= -105) return 75;
-    if (value >= -120) return 50;
-    return 25;
+
+    if (value >= -70) return 100;
+
+    if (value >= -90) {
+        // scale between -90 → -70
+        return 75 + ((value + 90) / 20) * 25;
+    }
+
+    if (value >= -110) {
+        // scale between -110 → -90
+        return 40 + ((value + 110) / 20) * 35;
+    }
+
+    return 20;
 }
 
 // --- Convert RSRQ to score ---
