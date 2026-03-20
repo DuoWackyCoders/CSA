@@ -136,14 +136,17 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
 
     if (winner.name === "AT&T") {
         document.querySelectorAll(".att-col").forEach(el => el.classList.add("highlight-column"));
+        document.querySelector(".att-header").classList.add("highlight-header");
     }
 
     if (winner.name === "Verizon") {
         document.querySelectorAll(".verizon-col").forEach(el => el.classList.add("highlight-column"));
+        document.querySelector(".verizon-header").classList.add("highlight-header");
     }
 
     if (winner.name === "T-Mobile") {
         document.querySelectorAll(".tmobile-col").forEach(el => el.classList.add("highlight-column"));
+        document.querySelector(".tmobile-header").classList.add("highlight-header");
     }
 
     // --- COLORS ---
@@ -218,9 +221,14 @@ document.querySelectorAll("input").forEach((input, index, inputs) => {
 document.getElementById("clearBtn").addEventListener("click", function () {
     document.querySelectorAll("input").forEach(input => input.value = "");
     document.getElementById("result").innerHTML = "";
+    
 
-    // remove highlight
+    // Remove previous highlights
     document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
         el.classList.remove("highlight-column");
+    });
+
+    document.querySelectorAll(".att-header, .verizon-header, .tmobile-header").forEach(el => {
+        el.classList.remove("highlight-header");
     });
 });
