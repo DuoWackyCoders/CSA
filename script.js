@@ -131,6 +131,7 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
     // --- CALCULATE ---
     carriers.forEach(c => {
         c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
+        console.log(c.name, "RSRP:", c.rsrp, "Score:", c.score);
         c.quality = getQuality(c.score);
     });
 
