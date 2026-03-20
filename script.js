@@ -31,12 +31,38 @@ function scoreRSSI(value) {
 
 // --- Final weighted score ---
 function calculateScore(rsrp, rsrq, sinr, rssi) {
-    return (
-        scoreRSRP(rsrp) * 0.45 +
-        scoreSINR(sinr) * 0.30 +
-        scoreRSRQ(rsrq) * 0.15 +
-        scoreRSSI(rssi) * 0.10
-    );
+
+    let weights = {
+        rsrp: 0.5,
+        sinr: 0.3,
+        rsrq: 0.1,
+        rssi: 0.1
+    };
+
+    let total = 0;
+    let weightSum = 0;
+
+    // RSRP (always required)
+    total += scoreRSRP(rsrp) * weights.rsrp;
+    weightSum += weights.rsrp;
+
+    // Optional values only counted if provided
+    if (rsrq !== null) {
+        total += scoreRSRQ(rsrq) * weights.rsrq;
+        weightSum += weights.rsrq;
+    }
+
+    if (sinr !== null) {
+        total += scoreSINR(sinr) * weights.sinr;
+        weightSum += weights.sinr;
+    }
+
+    if (rssi !== null) {
+        total += scoreRSSI(rssi) * weights.rssi;
+        weightSum += weights.rssi;
+    }
+
+    return total / weightSum;
 }
 
 // --- Quality label ---
@@ -47,134 +73,118 @@ function getQuality(score) {
     return "Poor";
 }
 
-// --- Main analyze function ---
+// --- MAIN ANALYZE ---
 document.getElementById("analyzeBtn").addEventListener("click", function () {
 
-const carriers = [
-    {
-        name: "AT&T",
-        rsrp: document.getElementById("att_rsrp").value,
-        rsrq: document.getElementById("att_rsrq").value,
-        rssi: document.getElementById("att_rssi").value,
-        sinr: document.getElementById("att_sinr").value,
-    },
-    {
-        name: "Verizon",
-        rsrp: document.getElementById("verizon_rsrp").value,
-        rsrq: document.getElementById("verizon_rsrq").value,
-        rssi: document.getElementById("verizon_rssi").value,
-        sinr: document.getElementById("verizon_sinr").value,
-    },
-    {
-        name: "T-Mobile",
-        rsrp: document.getElementById("tmobile_rsrp").value,
-        rsrq: document.getElementById("tmobile_rsrq").value,
-        rssi: document.getElementById("tmobile_rssi").value,
-        sinr: document.getElementById("tmobile_sinr").value,
-    }
-];
-
-   // --- Validation ---
-for (let c of carriers) {
-    if (!c.rsrp || c.rsrp.trim() === "") {
-    alert("Please enter RSRP for all carriers.");
-    document.getElementById("result").innerHTML = "";
-    return;
+    const carriers = [
+        {
+            name: "AT&T",
+            rsrp: document.getElementById("att_rsrp").value,
+            rsrq: document.getElementById("att_rsrq").value,
+            rssi: document.getElementById("att_rssi").value,
+            sinr: document.getElementById("att_sinr").value,
+        },
+        {
+            name: "Verizon",
+            rsrp: document.getElementById("verizon_rsrp").value,
+            rsrq: document.getElementById("verizon_rsrq").value,
+            rssi: document.getElementById("verizon_rssi").value,
+            sinr: document.getElementById("verizon_sinr").value,
+        },
+        {
+            name: "T-Mobile",
+            rsrp: document.getElementById("tmobile_rsrp").value,
+            rsrq: document.getElementById("tmobile_rsrq").value,
+            rssi: document.getElementById("tmobile_rssi").value,
+            sinr: document.getElementById("tmobile_sinr").value,
         }
-}
+    ];
 
-    // Convert to numbers AFTER validation
-carriers.forEach(c => {
-    c.rsrp = parseFloat(c.rsrp);
-    c.rsrq = c.rsrq === "" ? -15 : parseFloat(c.rsrq);
-    c.rssi = c.rssi === "" ? -100 : parseFloat(c.rssi);
-    c.sinr = c.sinr === "" ? 0 : parseFloat(c.sinr);
-});
-    
+    // --- VALIDATION (ONLY RSRP REQUIRED) ---
+    for (let c of carriers) {
+        if (!c.rsrp || c.rsrp.trim() === "") {
+            alert("Please enter RSRP for all carriers.");
+            document.getElementById("result").innerHTML = "";
+            return;
+        }
+    }
 
-    // Calculate scores
-carriers.forEach(c => {
-    c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
-    c.quality = getQuality(c.score);
-});
+    // --- CONVERT VALUES ---
+    carriers.forEach(c => {
+        c.rsrp = parseFloat(c.rsrp);
 
-// Sort highest first
-carriers.sort((a, b) => b.score - a.score);
+        c.rsrq = c.rsrq === "" ? null : parseFloat(c.rsrq);
+        c.rssi = c.rssi === "" ? null : parseFloat(c.rssi);
+        c.sinr = c.sinr === "" ? null : parseFloat(c.sinr);
+    });
 
-const resultDiv = document.getElementById("result");
+    // --- CALCULATE ---
+    carriers.forEach(c => {
+        c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
+        c.quality = getQuality(c.score);
+    });
 
-// Winner logic
-let winner = carriers[0];
+    // --- SORT ---
+    carriers.sort((a, b) => b.score - a.score);
 
-    // Remove previous highlights
-document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
-    el.classList.remove("highlight-column");
-});
+    let winner = carriers[0];
 
-// Apply highlight
-if (winner.name === "AT&T") {
-    document.querySelectorAll(".att-col").forEach(el => el.classList.add("highlight-column"));
-}
+    // --- COLUMN HIGHLIGHT ---
+    document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
+        el.classList.remove("highlight-column");
+    });
 
-if (winner.name === "Verizon") {
-    document.querySelectorAll(".verizon-col").forEach(el => el.classList.add("highlight-column"));
-}
+    if (winner.name === "AT&T") {
+        document.querySelectorAll(".att-col").forEach(el => el.classList.add("highlight-column"));
+    }
 
-if (winner.name === "T-Mobile") {
-    document.querySelectorAll(".tmobile-col").forEach(el => el.classList.add("highlight-column"));
-}
+    if (winner.name === "Verizon") {
+        document.querySelectorAll(".verizon-col").forEach(el => el.classList.add("highlight-column"));
+    }
 
-// assign color
-let color = "";
-if (winner.name === "AT&T") color = "#00A8E0";
-if (winner.name === "Verizon") color = "#CD040B";
-if (winner.name === "T-Mobile") color = "#E20074";
+    if (winner.name === "T-Mobile") {
+        document.querySelectorAll(".tmobile-col").forEach(el => el.classList.add("highlight-column"));
+    }
 
-// Start HTML
-let html = `
-    <div class="result-card">
-        <div class="best-header">
-            📡 Best Carrier
+    // --- COLORS ---
+    let colorMap = {
+        "AT&T": "#0077C8",
+        "Verizon": "#C8102E",
+        "T-Mobile": "#E20074"
+    };
+
+    // --- BUILD RESULT ---
+    let html = `
+        <div class="result-card">
+            <div class="best-header">📡 Best Carrier</div>
+            <div class="best-carrier" style="color:${colorMap[winner.name]}">
+                ${winner.name}
+            </div>
+            <div class="best-score">
+                Score: ${Math.round(winner.score)} (${winner.quality})
+            </div>
         </div>
 
-        <div class="best-carrier" style="color:${color}">
-            ${winner.name}
-        </div>
-
-        <div class="best-score">
-            Score: ${Math.round(winner.score)} (${winner.quality})
-        </div>
-    </div>
-
-    <div class="ranking">
-`;
-
-// Ranking rows
-carriers.forEach(c => {
-
-    let cColor = "";
-    if (c.name === "AT&T") cColor = "#0077C8";
-    if (c.name === "Verizon") cColor = "#C8102E";
-    if (c.name === "T-Mobile") cColor = "#E20074";
-
-    html += `
-        <div class="ranking-row ${c.name === winner.name ? 'winner-row' : ''}">
-            <span style="color:${cColor}">${c.name}</span>
-            <span>${Math.round(c.score)}</span>
-            <span class="quality-${c.quality.toLowerCase()}">${c.quality}</span>
-        </div>
+        <div class="ranking">
     `;
+
+    carriers.forEach(c => {
+        html += `
+            <div class="ranking-row">
+                <span style="color:${colorMap[c.name]}">${c.name}</span>
+                <span>${Math.round(c.score)}</span>
+                <span>${c.quality}</span>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+
+    document.getElementById("result").innerHTML = html;
 });
 
-// Close ranking
-html += `</div>`;
 
-// Render
-resultDiv.innerHTML = html;
-
-});
-
-// Arrow key navigation
+// --- KEYBOARD NAV ---
 document.querySelectorAll("input").forEach((input, index, inputs) => {
 
     input.addEventListener("keydown", function (e) {
@@ -203,7 +213,14 @@ document.querySelectorAll("input").forEach((input, index, inputs) => {
 
 });
 
+
+// --- CLEAR BUTTON ---
 document.getElementById("clearBtn").addEventListener("click", function () {
     document.querySelectorAll("input").forEach(input => input.value = "");
     document.getElementById("result").innerHTML = "";
+
+    // remove highlight
+    document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
+        el.classList.remove("highlight-column");
+    });
 });
