@@ -76,10 +76,11 @@ const carriers = [
 
    // --- Validation ---
 for (let c of carriers) {
-    if (!c.rsrp || !c.rsrq || c.rsrp.trim() === "" || c.rsrq.trim() === "") {
-        alert("Please enter RSRP and RSRQ for all carriers.");
-        return;
-    }
+    if (!c.rsrp || c.rsrp.trim() === "") {
+    alert("Please enter RSRP for all carriers.");
+    document.getElementById("result").innerHTML = "";
+    return;
+        }
 }
 
     // Convert to numbers AFTER validation
