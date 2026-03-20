@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CSA - Carrier Signal Analyzer</title>
-  <link rel="stylesheet" href="style.css">
+    <title>CSA - Carrier Signal Analyzer</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -13,58 +13,57 @@
 <table class="signal-table">
 
 <tr>
-<th></th>
-<th style="color:#0077C8;">AT&T</th>
-<th style="color:#C8102E;">Verizon</th>
-<th style="color:#E20074;">T-Mobile</th>
+    <th></th>
+    <th style="color:#0077C8;">AT&T</th>
+    <th style="color:#C8102E;">Verizon</th>
+    <th style="color:#E20074;">T-Mobile</th>
 </tr>
 
 <tr>
-<td>RSRP (dBm)</td>
-<td><input id="att_rsrp" type="number" class="att-col"></td>
-<td><input id="verizon_rsrp" type="number" class="verizon-col"></td>
-<td><input id="tmobile_rsrp" type="number" class="tmobile-col"></td>
+    <td>RSRP (dBm)</td>
+    <td class="att-col"><input id="att_rsrp" type="number"></td>
+    <td class="verizon-col"><input id="verizon_rsrp" type="number"></td>
+    <td class="tmobile-col"><input id="tmobile_rsrp" type="number"></td>
 </tr>
 
 <tr>
-<td>RSRQ</td>
-<td><input id="att_rsrq" type="number" class="att-col"></td>
-<td><input id="verizon_rsrq" type="number" class="verizon-col"></td>
-<td><input id="tmobile_rsrq" type="number" class="tmobile-col"></td>
+    <td>RSRQ</td>
+    <td class="att-col"><input id="att_rsrq" type="number"></td>
+    <td class="verizon-col"><input id="verizon_rsrq" type="number"></td>
+    <td class="tmobile-col"><input id="tmobile_rsrq" type="number"></td>
 </tr>
 
 <tr>
-<td>RSSI</td>
-<td><input id="att_rssi" type="number" class="att-col"></td>
-<td><input id="verizon_rssi" type="number" class="verizon-col"></td>
-<td><input id="tmobile_rssi" type="number" class="tmobile-col"></td>
+    <td>RSSI</td>
+    <td class="att-col"><input id="att_rssi" type="number"></td>
+    <td class="verizon-col"><input id="verizon_rssi" type="number"></td>
+    <td class="tmobile-col"><input id="tmobile_rssi" type="number"></td>
 </tr>
 
 <tr>
-<td>SINR</td>
-<td><input id="att_sinr" type="number" class="att-col"></td>
-<td><input id="verizon_sinr" type="number" class="verizon-col"></td>
-<td><input id="tmobile_sinr" type="number" class="tmobile-col"></td>
+    <td>SINR</td>
+    <td class="att-col"><input id="att_sinr" type="number"></td>
+    <td class="verizon-col"><input id="verizon_sinr" type="number"></td>
+    <td class="tmobile-col"><input id="tmobile_sinr" type="number"></td>
 </tr>
 
 <tr>
-<td>Signal %</td>
-<td><input id="att_percent" type="number" class="att-col"></td>
-<td><input id="verizon_percent" type="number" class="verizon-col"></td>
-<td><input id="tmobile_percent" type="number" class="tmobile-col"></td>
+    <td>Signal %</td>
+    <td class="att-col"><input id="att_percent" type="number"></td>
+    <td class="verizon-col"><input id="verizon_percent" type="number"></td>
+    <td class="tmobile-col"><input id="tmobile_percent" type="number"></td>
 </tr>
-  
+
 </table>
 
 <div class="button-group">
     <button id="analyzeBtn">Analyze</button>
     <button id="clearBtn" class="clear-btn">Clear</button>
 </div>
-  
+
 <div id="result"></div>
 
- <script src="script.js"></script> 
-  
+<script src="script.js"></script>
+
 </body>
-  
 </html>
