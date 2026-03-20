@@ -55,13 +55,14 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 18px; /* tighter spacing */
-    margin-top: 25px;
+    gap: 22px;
+    margin-top: 30px;
+    width: 100%;
 }
 
 button {
-    padding: 10px 20px;
-    width: 140px;
+    padding: 10px 24px;
+    min-width: 140px;
     border-radius: 8px;
     border: none;
     font-size: 15px;
