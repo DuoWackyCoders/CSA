@@ -1,6 +1,6 @@
 // --- Convert RSRP to score ---
 function scoreRSRP(value) {
-    if (value >= -90) return 100;
+    if (value >= -90) return 100; 
     if (value >= -105) return 75;
     if (value >= -120) return 50;
     return 25;
