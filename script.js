@@ -86,7 +86,7 @@ for (let c of carriers) {
     // Convert to numbers AFTER validation
 carriers.forEach(c => {
     c.rsrp = parseFloat(c.rsrp);
-    c.rsrq = parseFloat(c.rsrq);
+    c.rsrq = c.rsrq === "" ? -15 : parseFloat(c.rsrq);
     c.rssi = c.rssi === "" ? -100 : parseFloat(c.rssi);
     c.sinr = c.sinr === "" ? 0 : parseFloat(c.sinr);
 });
