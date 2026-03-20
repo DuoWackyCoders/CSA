@@ -146,6 +146,12 @@ button {
     transition: background 0.3s ease;
 }
 
+.highlight-header {
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
 /* OPTIONAL: smooth fade */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
