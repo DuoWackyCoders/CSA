@@ -1,85 +1,15 @@
-// --- Convert RSRP to score ---
-function scoreRSRP(value) {
-
-    if (value >= -70) return 100;
-
-    if (value >= -90) {
-        // scale between -90 → -70
-        return 75 + ((value + 90) / 20) * 25;
-    }
-
-    if (value >= -110) {
-        // scale between -110 → -90
-        return 40 + ((value + 110) / 20) * 35;
-    }
-
-    return 20;
+// --- CLASSIFY RSRP ---
+function classifyRSRP(value) {
+    if (value >= -90) return "Excellent";
+    if (value >= -105) return "Good";
+    if (value >= -120) return "Fair";
+    return "Poor";
 }
 
-// --- Convert RSRQ to score ---
-function scoreRSRQ(value) {
-    if (value >= -9) return 100;
-    if (value >= -12) return 70;
-    return 40;
-}
-
-// --- Convert SINR to score ---
-function scoreSINR(value) {
-    if (value >= 20) return 100;
-    if (value >= 13) return 80;
-    if (value >= 0) return 50;
-    return 20;
-}
-
-// --- Convert RSSI to score ---
-function scoreRSSI(value) {
-    if (value >= -65) return 100;
-    if (value >= -75) return 75;
-    if (value >= -85) return 50;
-    return 25;
-}
-
-// --- Final weighted score ---
-function calculateScore(rsrp, rsrq, sinr, rssi) {
-
-    let weights = {
-        rsrp: 0.5,
-        sinr: 0.3,
-        rsrq: 0.1,
-        rssi: 0.1
-    };
-
-    let total = 0;
-    let weightSum = 0;
-
-    // RSRP (always required)
-    total += scoreRSRP(rsrp) * weights.rsrp;
-    weightSum += weights.rsrp;
-
-    // Optional values only counted if provided
-    if (rsrq !== null) {
-        total += scoreRSRQ(rsrq) * weights.rsrq;
-        weightSum += weights.rsrq;
-    }
-
-    if (sinr !== null) {
-        total += scoreSINR(sinr) * weights.sinr;
-        weightSum += weights.sinr;
-    }
-
-    if (rssi !== null) {
-        total += scoreRSSI(rssi) * weights.rssi;
-        weightSum += weights.rssi;
-    }
-
-    return total / weightSum;
-}
-
-// --- Quality label ---
-function getQuality(score) {
-    if (score >= 85) return "Excellent";
-    if (score >= 70) return "Good";
-    if (score >= 50) return "Fair";
+// --- CLASSIFY RSRQ ---
+function classifyRSRQ(value) {
+    if (value >= -9) return "Excellent";
+    if (value >= -12) return "Good";
     return "Poor";
 }
 
@@ -90,27 +20,21 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
         {
             name: "AT&T",
             rsrp: document.getElementById("att_rsrp").value,
-            rsrq: document.getElementById("att_rsrq").value,
-            rssi: document.getElementById("att_rssi").value,
-            sinr: document.getElementById("att_sinr").value,
+            rsrq: document.getElementById("att_rsrq").value
         },
         {
             name: "Verizon",
             rsrp: document.getElementById("verizon_rsrp").value,
-            rsrq: document.getElementById("verizon_rsrq").value,
-            rssi: document.getElementById("verizon_rssi").value,
-            sinr: document.getElementById("verizon_sinr").value,
+            rsrq: document.getElementById("verizon_rsrq").value
         },
         {
             name: "T-Mobile",
             rsrp: document.getElementById("tmobile_rsrp").value,
-            rsrq: document.getElementById("tmobile_rsrq").value,
-            rssi: document.getElementById("tmobile_rssi").value,
-            sinr: document.getElementById("tmobile_sinr").value,
+            rsrq: document.getElementById("tmobile_rsrq").value
         }
     ];
 
-    // --- VALIDATION (ONLY RSRP REQUIRED) ---
+    // --- VALIDATION ---
     for (let c of carriers) {
         if (!c.rsrp || c.rsrp.trim() === "") {
             alert("Please enter RSRP for all carriers.");
@@ -119,30 +43,51 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
         }
     }
 
-    // --- CONVERT VALUES ---
+    // --- PARSE ---
     carriers.forEach(c => {
         c.rsrp = parseFloat(c.rsrp);
-
         c.rsrq = c.rsrq === "" ? null : parseFloat(c.rsrq);
-        c.rssi = c.rssi === "" ? null : parseFloat(c.rssi);
-        c.sinr = c.sinr === "" ? null : parseFloat(c.sinr);
+
+        c.rsrpQuality = classifyRSRP(c.rsrp);
+        c.rsrqQuality = c.rsrq !== null ? classifyRSRQ(c.rsrq) : "Unknown";
     });
 
-    // --- CALCULATE ---
-    carriers.forEach(c => {
-        c.score = calculateScore(c.rsrp, c.rsrq, c.sinr, c.rssi);
-        console.log(c.name, "RSRP:", c.rsrp, "Score:", c.score);
-        c.quality = getQuality(c.score);
-    });
+    // --- REMOVE BAD SIGNALS ---
+    let viable = carriers.filter(c => c.rsrp >= -105);
 
-    // --- SORT ---
-    carriers.sort((a, b) => b.score - a.score);
+    if (viable.length === 0) {
+        document.getElementById("result").innerHTML =
+            "<div class='result-card'>⚠️ No viable carriers (signal too weak)</div>";
+        return;
+    }
 
-    let winner = carriers[0];
+    // --- SORT BY RSRP ---
+    viable.sort((a, b) => b.rsrp - a.rsrp);
 
-    // --- COLUMN HIGHLIGHT ---
+    let winner = viable[0];
+
+    // --- CHECK CLOSE RANGE (tie zone) ---
+    let close = viable.filter(c => Math.abs(c.rsrp - winner.rsrp) <= 5);
+
+    if (close.length > 1) {
+        close.sort((a, b) => (b.rsrq || -99) - (a.rsrq || -99));
+        winner = close[0];
+    }
+
+    // --- COLORS ---
+    let colorMap = {
+        "AT&T": "#0077C8",
+        "Verizon": "#C8102E",
+        "T-Mobile": "#E20074"
+    };
+
+    // --- HIGHLIGHT ---
     document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
         el.classList.remove("highlight-column");
+    });
+
+    document.querySelectorAll(".att-header, .verizon-header, .tmobile-header").forEach(el => {
+        el.classList.remove("highlight-header");
     });
 
     if (winner.name === "AT&T") {
@@ -160,13 +105,6 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
         document.querySelector(".tmobile-header").classList.add("highlight-header");
     }
 
-    // --- COLORS ---
-    let colorMap = {
-        "AT&T": "#0077C8",
-        "Verizon": "#C8102E",
-        "T-Mobile": "#E20074"
-    };
-
     // --- BUILD RESULT ---
     let html = `
         <div class="result-card">
@@ -174,20 +112,29 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
             <div class="best-carrier" style="color:${colorMap[winner.name]}">
                 ${winner.name}
             </div>
+
             <div class="best-score">
-                Score: ${Math.round(winner.score)} (${winner.quality})
+                RSRP: ${winner.rsrp} (${winner.rsrpQuality})
+            </div>
+
+            <div style="margin-top:10px; font-size:13px; opacity:0.8;">
+                ${winner.rsrpQuality === "Excellent" ? "Strong and reliable signal" : ""}
+                ${winner.rsrpQuality === "Good" ? "Usable signal, acceptable performance" : ""}
+                ${winner.rsrpQuality === "Fair" ? "May experience instability" : ""}
             </div>
         </div>
 
         <div class="ranking">
     `;
 
+    carriers.sort((a, b) => b.rsrp - a.rsrp);
+
     carriers.forEach(c => {
         html += `
             <div class="ranking-row">
                 <span style="color:${colorMap[c.name]}">${c.name}</span>
-                <span>${Math.round(c.score)}</span>
-                <span>${c.quality}</span>
+                <span>${c.rsrp}</span>
+                <span>${c.rsrpQuality}</span>
             </div>
         `;
     });
@@ -198,43 +145,11 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
 });
 
 
-// --- KEYBOARD NAV ---
-document.querySelectorAll("input").forEach((input, index, inputs) => {
-
-    input.addEventListener("keydown", function (e) {
-
-        let cols = 3;
-
-        if (e.key === "ArrowDown") {
-            e.preventDefault();
-            let next = inputs[index + cols];
-            if (next) next.focus();
-        }
-
-        if (e.key === "ArrowUp") {
-            e.preventDefault();
-            let prev = inputs[index - cols];
-            if (prev) prev.focus();
-        }
-
-        if (e.key === "Enter") {
-            e.preventDefault();
-            let next = inputs[index + cols];
-            if (next) next.focus();
-        }
-
-    });
-
-});
-
-
-// --- CLEAR BUTTON ---
+// --- CLEAR ---
 document.getElementById("clearBtn").addEventListener("click", function () {
     document.querySelectorAll("input").forEach(input => input.value = "");
     document.getElementById("result").innerHTML = "";
-    
 
-    // Remove previous highlights
     document.querySelectorAll(".att-col, .verizon-col, .tmobile-col").forEach(el => {
         el.classList.remove("highlight-column");
     });
