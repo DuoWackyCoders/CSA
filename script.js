@@ -152,18 +152,17 @@ let html = `
         <div class="why-box">
             ${whyText.replace(/\n/g, "<br>")}
         </div>
+
+        <div style="margin-top:10px; font-size:13px; opacity:0.8;">
+            ${winner.rsrpQuality === "Excellent" ? "Strong and reliable signal" : ""}
+            ${winner.rsrpQuality === "Good" ? "Usable signal, acceptable performance" : ""}
+            ${winner.rsrpQuality === "Fair" ? "May experience instability" : ""}
+        </div>
     </div>
+
+    <div class="ranking">
 `;
 
-            <div style="margin-top:10px; font-size:13px; opacity:0.8;">
-                ${winner.rsrpQuality === "Excellent" ? "Strong and reliable signal" : ""}
-                ${winner.rsrpQuality === "Good" ? "Usable signal, acceptable performance" : ""}
-                ${winner.rsrpQuality === "Fair" ? "May experience instability" : ""}
-            </div>
-        </div>
-
-        <div class="ranking">
-    `;
 
     carriers.sort((a, b) => b.rsrp - a.rsrp);
 
