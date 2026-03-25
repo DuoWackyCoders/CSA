@@ -114,6 +114,13 @@ button {
     animation: fadeIn 0.4s ease;
 }
 
+.decision-box {
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+}
+
 /* RESULT TEXT */
 .best-header {
     font-size: 18px;
