@@ -16,7 +16,7 @@ function classifyRSRQ(value) {
 // --- MAIN ANALYZE ---
 document.getElementById("analyzeBtn").addEventListener("click", function () {
 
-    const carriers = [
+    let carriers = [
         {
             name: "AT&T",
             rsrp: document.getElementById("att_rsrp").value,
@@ -34,14 +34,19 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
         }
     ];
 
+// Remove empty carriers
+carriers = carriers.filter(c => c.rsrp !== "" && c.rsrp !== null);
+
     // --- VALIDATION ---
-    for (let c of carriers) {
-        if (!c.rsrp || c.rsrp.trim() === "") {
-            alert("Please enter RSRP for all carriers.");
-            document.getElementById("result").innerHTML = "";
-            return;
-        }
-    }
+    if (carriers.length === 0) {
+    alert("Please enter at least one carrier.");
+    return;
+}
+
+if (carriers.length === 1) {
+    let confirmSingle = confirm("Only one carrier entered. Proceed?");
+    if (!confirmSingle) return;
+}
 
     // --- PARSE ---
     carriers.forEach(c => {
@@ -105,17 +110,50 @@ document.getElementById("analyzeBtn").addEventListener("click", function () {
         document.querySelector(".tmobile-header").classList.add("highlight-header");
     }
 
-    // --- BUILD RESULT ---
-    let html = `
-        <div class="result-card">
-            <div class="best-header">📡 Best Carrier</div>
-            <div class="best-carrier" style="color:${colorMap[winner.name]}">
-                ${winner.name}
-            </div>
+   // --- BUILD WHY EXPLANATION ---
+let whyText = "";
 
-            <div class="best-score">
-                RSRP: ${winner.rsrp} (${winner.rsrpQuality})
-            </div>
+// Strongest signal
+whyText += `• Strongest signal (RSRP: ${winner.rsrp} dBm)\n`;
+
+// Compare to others
+carriers.forEach(c => {
+    if (c.name !== winner.name) {
+        let diff = c.rsrp - winner.rsrp;
+
+        if (diff <= -5) {
+            whyText += `• ${c.name} is significantly weaker (${c.rsrp})\n`;
+        } else if (diff < 0) {
+            whyText += `• ${c.name} is slightly weaker (${c.rsrp})\n`;
+        } else if (diff === 0) {
+            whyText += `• ${c.name} is equal in signal\n`;
+        }
+    }
+});
+
+// Quality note
+if (winner.rsrq !== null) {
+    whyText += `• Signal quality: ${winner.rsrq} (${winner.rsrqQuality})\n`;
+}
+
+// --- BUILD RESULT UI ---
+let html = `
+    <div class="result-card">
+        <div class="best-header">📡 Best Carrier</div>
+
+        <div class="best-carrier" style="color:${colorMap[winner.name]}">
+            ${winner.name}
+        </div>
+
+        <div class="best-score">
+            RSRP: ${winner.rsrp} (${winner.rsrpQuality})
+        </div>
+
+        <div class="why-box">
+            ${whyText.replace(/\n/g, "<br>")}
+        </div>
+    </div>
+`;
 
             <div style="margin-top:10px; font-size:13px; opacity:0.8;">
                 ${winner.rsrpQuality === "Excellent" ? "Strong and reliable signal" : ""}
