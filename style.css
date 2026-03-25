@@ -177,3 +177,76 @@ button {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    h2 {
+        font-size: 14px;
+    }
+
+    /* TABLE → STACKED */
+    .signal-table {
+        display: block;
+        width: 100%;
+        border-spacing: 10px;
+    }
+
+    .signal-table tr {
+        display: block;
+        margin-bottom: 15px;
+        background: rgba(255,255,255,0.05);
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .signal-table td,
+    .signal-table th {
+        display: block;
+        text-align: left;
+        margin-bottom: 6px;
+    }
+
+    .signal-table td:first-child {
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    /* INPUTS */
+    .signal-table input {
+        width: 100%;
+        padding: 10px;
+        font-size: 16px; /* prevents zoom on iPhone */
+    }
+
+    /* BUTTONS */
+    .button-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    /* RESULT CARD */
+    .result-card {
+        width: 100%;
+    }
+
+    .ranking {
+        width: 100%;
+    }
+
+    .ranking-row {
+        grid-template-columns: 1fr 50px 70px;
+    }
+}
