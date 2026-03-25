@@ -113,6 +113,23 @@ if (carriers.length === 1) {
    // --- BUILD WHY EXPLANATION ---
 let whyText = "";
 
+    // --- EV CHARGER DECISION ---
+    let decisionText = "";
+    let decisionColor = "";
+
+    if (winner.rsrp >= -95) {
+        decisionText = "🟢 GO — Suitable for EV charger deployment";
+        decisionColor = "#2ea44f";
+    } 
+    else if (winner.rsrp >= -105) {
+        decisionText = "⚠️ MARGINAL — May experience connectivity issues";
+        decisionColor = "#f0ad4e";
+    } 
+    else {
+        decisionText = "🔴 NO GO — Signal too weak for reliable operation";
+        decisionColor = "#d9534f";
+    }
+
 // Strongest signal
 whyText += `• Strongest signal (RSRP: ${winner.rsrp} dBm)\n`;
 
@@ -147,6 +164,10 @@ let html = `
 
         <div class="best-score">
             RSRP: ${winner.rsrp} (${winner.rsrpQuality})
+        </div>
+
+        <div class="decision-box" style="color:${decisionColor}">
+            ${decisionText}
         </div>
 
         <div class="why-box">
