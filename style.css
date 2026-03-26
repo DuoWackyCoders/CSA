@@ -212,7 +212,9 @@ button {
     }
 
     button {
-        width: 100%;
+        width: 220px;
+        margin: 0 auto;
+        display: block;
     }
 
     /* FULL WIDTH RESULTS */
