@@ -114,7 +114,7 @@ if (carriers.length === 1) {
    // --- BUILD WHY EXPLANATION ---
 let whyText = "";
 
-    // --- EV CHARGER DECISION ---
+    // --- EV CHARGER DECISION - This is the Go/No Go Feature ---
     let decisionText = "";
     let decisionColor = "";
 
